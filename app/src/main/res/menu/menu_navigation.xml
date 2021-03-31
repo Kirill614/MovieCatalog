@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:anroid="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <item android:title="  Главная">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_info"
+                    android:title="Информация" />
+            </group>
+        </menu>
+    </item>
+    <item android:title="  Смотреть фильмы">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/nav_comedy"
+                    android:title="Комедии" />
+                <item
+                    android:id="@+id/nav_melodr"
+                    android:title="Мелодрамы" />
+                <item
+                    android:id="@+id/nav_action"
+                    android:title="Боевики"/>
+                <item
+                    android:id="@+id/nav_detective"
+                    android:title="Детектив"/>
+                <item
+                    android:id="@+id/nav_fiction"
+                    android:title="Фантастика"/>
+                <item
+                    android:id="@+id/nav_history"
+                    android:title="Исторические фильмы"/>
+            </group>
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">КиноКаталог</string>
+    <string name="popular_people">Популярные люди</string>
+    <string name="the_most_pop_actors">Самые популярные актеры</string>
+    <string name="films_with_actor">Фильмы с участием актера</string>
+    <string name="audienceScore">Оценка зрителей: %1$s</string>
+    <string name="genreText">%1$s</string>
+    <string name="new_films">Новинки кино</string>
+    <string name="runtime_min">%1$s мин.</string>
+    <string name="overview_title">Описание</string>
+    <string name="openDrawer"></string>
+    <string name="closeDrawer"></string>
+</resources>
