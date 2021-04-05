@@ -10,4 +10,7 @@
     <string name="overview_title">Описание</string>
     <string name="openDrawer"></string>
     <string name="closeDrawer"></string>
+    <string name="infoFragment_title">Информация</string>
+    <string name="base_image_url_tmdb">"https://image.tmdb.org/t/p/w500"</string>
+    <string name="base_youtube_thumbnails_url">https://img.youtube.com/vi/%1$s/0.jpg</string>
 </resources>

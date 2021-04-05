@@ -2,10 +2,11 @@ package com.example.mymoviecatalog.data
 
 import com.google.gson.annotations.SerializedName
 
-data class PopMovieModel (
+data class PopMovies(
     @SerializedName("results")
     val popMovieList: ArrayList<PopMovie>
 )
+
 data class PopMovie(
     @SerializedName("title")
     val title: String,

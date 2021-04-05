@@ -1,34 +1,59 @@
 package com.example.mymoviecatalog.Network
+
 import com.example.mymoviecatalog.data.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
- interface ApiService {
-    @GET("person/popular?")
-    open suspend fun getPersons(@Query("api_key") apiKey: String,
-                           @Query("language") lang:String): PersonModel
-    @GET("person/{person_id}")
-    open suspend fun getPersonDetails(@Path("person_id") id: Int,
-                                 @Query("api_key") apiKey: String): ActorDetailsModel
+interface ApiService {
+    companion object{
+        private const val PERSON_POPULAR = "person/popular"
+        private const val PERSON_DETAILS = "person/{person_id}"
+        private const val MOVIE_POPULAR = "/3/movie/popular"
+        private const val MOVIE_DETAILS = "movie/{movie_id}"
+        private const val YOUTUBE_FILMS_URL = "https://youtube.googleapis.com/youtube/v3/playlistItems?"
+        private const val MOVIE_TRAILERS = "movie/{movie_id}/videos"
+        private const val MOVIE_SEARCH = "/3/search/movie"
+        private const val PARAM_LANGUAGE = "language"
+        private const val MOVIE_ID = "movie_id"
+        const val BASE_URL_IMAGE_TMDB = "https://image.tmdb.org/t/p/w500"
+    }
+    @GET(PERSON_POPULAR)
+    open suspend fun getPersons(
+        @Query(PARAM_LANGUAGE) lang: String
+    ): PersonModel
 
-    @GET("/3/movie/popular")
-    open suspend fun getPopMovie(@Query("api_key") apiKey: String,@Query("language") lang: String): PopMovieModel
+    @GET(PERSON_DETAILS)
+    open suspend fun getPersonDetails(
+        @Path("person_id") id: Int
+    ): ActorDetailsModel
 
-    @GET("/3/search/movie")
-    open suspend fun searchFilms(@Query("api_key") apiKey: String,@Query("query") query: String,
-                            @Query("language")lang: String): SearchMovie
+    @GET(MOVIE_POPULAR)
+    open suspend fun getPopMovie(
+        @Query(PARAM_LANGUAGE) lang: String
+    ): PopMovies
 
-    @GET("movie/{movie_id}")
-    open suspend fun getFilmDetails(@Path("movie_id")id: Int,@Query("api_key")apiKey: String,
-                               @Query("language") lang: String): FoundFilmModel
+    @GET(MOVIE_SEARCH)
+    open suspend fun searchFilms(
+        @Query("query") query: String,
+        @Query(PARAM_LANGUAGE) lang: String
+    ): MovieSearch
 
-    @GET("https://youtube.googleapis.com/youtube/v3/playlistItems?")
-    open suspend fun getYoutubeFilms(@Query("part")part: String,@Query("playlistId")id: String,
-                                @Query("maxResults")maxResults: Int,
-                                @Query("key")key: String): YouTubeFilm
+    @GET(MOVIE_DETAILS)
+    open suspend fun getFilmDetails(
+        @Path(MOVIE_ID) id: Int,
+        @Query(PARAM_LANGUAGE) lang: String
+    ): FilmDetails
 
-    @GET("movie/{movie_id}/videos")
-    open suspend fun getTrailers(@Path("movie_id")movieId: Int,
-                            @Query("api_key") apiKey: String): Trailers
+    @GET(YOUTUBE_FILMS_URL)
+    open suspend fun getYoutubeFilms(
+        @Query("part") part: String, @Query("playlistId") id: String,
+        @Query("maxResults") maxResults: Int,
+        @Query("key") key: String
+    ): YouTubeFilm
+
+    @GET(MOVIE_TRAILERS)
+    open suspend fun getTrailers(
+        @Path(MOVIE_ID) movieId: Int
+    ): Trailers
 }

@@ -2,7 +2,7 @@ package com.example.mymoviecatalog.data
 
 import com.google.gson.annotations.SerializedName
 
-data class SearchMovie (
+data class MovieSearch (
     @SerializedName("results")
     val foundMovieList: ArrayList<FoundMovie>
 )

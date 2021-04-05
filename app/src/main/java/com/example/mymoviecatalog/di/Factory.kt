@@ -10,9 +10,9 @@ class Factory
 @Inject constructor(
     private val viewModels: Map<Class<out ViewModel>,
             @JvmSuppressWildcards Provider<ViewModel>>
-):ViewModelProvider.Factory {
+) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-     val viewModelProvider = viewModels[modelClass]
+        val viewModelProvider = viewModels[modelClass]
         return viewModelProvider?.get() as T
     }
 }

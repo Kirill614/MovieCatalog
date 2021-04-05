@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.mymoviecatalog.Network.ApiHelper
+import com.example.mymoviecatalog.Network.ApiService
 import com.example.mymoviecatalog.R
+import com.example.mymoviecatalog.Repository.MainRepository
+import com.example.mymoviecatalog.Utils.CoroutineContextProvieder
 import com.example.mymoviecatalog.data.FoundMovie
 import com.example.mymoviecatalog.Utils.ItemClickListener
 import com.example.mymoviecatalog.base.BaseFragment
@@ -22,7 +26,6 @@ class FilmSearchFragment : BaseFragment(), ItemClickListener {
         super.onCreate(bundle)
         queryString = arguments?.getString("query").toString()
         filmViewModel = viewModel(factory)
-        //setupObserversForViewModel()
     }
 
     override fun onCreateView(
@@ -38,22 +41,27 @@ class FilmSearchFragment : BaseFragment(), ItemClickListener {
     }
 
     override fun onClick(id: Int) {
-        createActivity(FilmDetailsActivity::class.java, id.toString())
+        createActivity(FilmDetailsActivity::class.java, id)
     }
 
     private fun setupObserversForViewModel() {
         filmViewModel.searchFilms(queryString)
-        filmViewModel.filmLiveData.observe(viewLifecycleOwner, Observer{
-            when(it){
-                is FilmViewModel.ViewModelViewState.SuccessSearchMovie ->{
+        filmViewModel.filmLiveData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is FilmViewModel.ViewModelViewState.SuccessMovieSearch -> {
                     foundFilmsList = it.data.foundMovieList
-                    val adapter = SearchFilmAdapter(foundFilmsList, this)
-                    val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-                    search_recycler.layoutManager = layoutManager
-                    search_recycler.adapter = adapter
+                    setupMovieSearchRV()
                 }
             }
         })
+    }
+
+    private fun setupMovieSearchRV(){
+        val adapter = SearchFilmAdapter(foundFilmsList, this)
+        val layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        search_recycler.layoutManager = layoutManager
+        search_recycler.adapter = adapter
     }
 
 }

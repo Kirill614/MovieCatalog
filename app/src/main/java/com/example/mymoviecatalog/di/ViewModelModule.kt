@@ -12,16 +12,16 @@ import dagger.multibindings.IntoMap
 abstract class ViewModelModule {
     @Binds
     @IntoMap
-    @ViewModelKey(ActorsViewModel:: class)
+    @ViewModelKey(ActorsViewModel::class)
     internal abstract fun binsActorsViewModel(viewModel: ActorsViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(FilmViewModel:: class)
+    @ViewModelKey(FilmViewModel::class)
     internal abstract fun binsFilmViewModel(viewModel: FilmViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(YouTubeViewModel:: class)
+    @ViewModelKey(YouTubeViewModel::class)
     internal abstract fun binsYoutubeViewModel(viewModel: YouTubeViewModel): ViewModel
 }

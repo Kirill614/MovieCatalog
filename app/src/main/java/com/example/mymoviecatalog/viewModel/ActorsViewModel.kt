@@ -14,21 +14,23 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class ActorsViewModel
-@Inject constructor(private val mainRep: MainRepository,
-                    private val contextProvider: CoroutineContextProvieder) : ViewModel() {
+@Inject constructor(
+    private val mainRep: MainRepository,
+    private val contextProvider: CoroutineContextProvieder
+) : ViewModel() {
     private val _actorsLiveData = MutableLiveData<ViewModelViewState>()
     val actorsLiveData = _actorsLiveData
     //val IO: CoroutineContext by lazy { Dispatchers.IO }
     //val IO: CoroutineContext = Dispatchers.IO
 
     fun getPersons() {
-          _actorsLiveData.value = ViewModelViewState.Loading
-         viewModelScope.launch {
-           val data = withContext(contextProvider.IO) {
-             mainRep.getPersons()
-         }
-         _actorsLiveData.value = ViewModelViewState.SuccessActors(data)
-         }
+        _actorsLiveData.value = ViewModelViewState.Loading
+        viewModelScope.launch {
+            val data = withContext(contextProvider.IO) {
+                mainRep.getPersons()
+            }
+            _actorsLiveData.value = ViewModelViewState.SuccessActors(data)
+        }
     }
 
     fun getActorDetails(id: Int) {
@@ -44,7 +46,7 @@ class ActorsViewModel
     sealed class ViewModelViewState {
         object Loading : ViewModelViewState()
         data class Error(val trowable: Throwable) : ViewModelViewState()
-        data class SuccessActors(val data: PersonModel): ViewModelViewState()
+        data class SuccessActors(val data: PersonModel) : ViewModelViewState()
         data class SuccessActorDetails(val data: ActorDetailsModel) : ViewModelViewState()
     }
 

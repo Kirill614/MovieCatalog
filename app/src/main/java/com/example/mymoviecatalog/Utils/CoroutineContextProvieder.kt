@@ -6,5 +6,5 @@ import kotlin.coroutines.CoroutineContext
 
 open class CoroutineContextProvieder @Inject constructor() {
     val IO: CoroutineContext by lazy { Dispatchers.IO }
-    val MAIN: CoroutineContext by lazy{Dispatchers.Main}
+    val MAIN: CoroutineContext by lazy { Dispatchers.Main }
 }

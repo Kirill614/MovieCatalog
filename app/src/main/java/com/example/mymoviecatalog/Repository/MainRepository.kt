@@ -4,7 +4,7 @@ import com.example.mymoviecatalog.Network.ApiHelper
 import javax.inject.Inject
 
 open class MainRepository
-@Inject constructor(private val apiHelper: ApiHelper){
+@Inject constructor(private val apiHelper: ApiHelper) {
     open suspend fun getPersons() = apiHelper.getPersons()
     open suspend fun getPersonDetails(id: Int) = apiHelper.getPersonDetails(id)
     open suspend fun getPopMovie() = apiHelper.getPopMovies()

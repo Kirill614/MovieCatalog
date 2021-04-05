@@ -13,11 +13,13 @@ import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
 class YouTubeViewModel
-@Inject constructor(private val mainRep: MainRepository,
-                    private val contextProvider: CoroutineContextProvieder): ViewModel(){
+@Inject constructor(
+    private val mainRep: MainRepository,
+    private val contextProvider: CoroutineContextProvieder
+) : ViewModel() {
     private val _youtubeLiveData = MutableLiveData<ViewModelViewState>()
     val youtubeLiveData = _youtubeLiveData
-    val IO: CoroutineContext by lazy{Dispatchers.IO}
+    val IO: CoroutineContext by lazy { Dispatchers.IO }
 
     fun getYoutubeFilms(playlistId: String) {
         _youtubeLiveData.value = ViewModelViewState.Loading
@@ -29,9 +31,9 @@ class YouTubeViewModel
         }
     }
 
-    sealed class ViewModelViewState(){
-        object Loading: ViewModelViewState()
-        data class Error(val thr: Throwable): ViewModelViewState()
-        data class SuccessYoutubeFilms(val data: YouTubeFilm): ViewModelViewState()
+    sealed class ViewModelViewState() {
+        object Loading : ViewModelViewState()
+        data class Error(val thr: Throwable) : ViewModelViewState()
+        data class SuccessYoutubeFilms(val data: YouTubeFilm) : ViewModelViewState()
     }
 }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mymoviecatalog.Network.ApiService
 import com.example.mymoviecatalog.data.PopMovie
 import com.example.mymoviecatalog.R
 import com.example.mymoviecatalog.Utils.ItemClickListener
@@ -12,7 +13,6 @@ import kotlinx.android.synthetic.main.card_view_movie.view.*
 
 class MovieRVAdapter(private val list: List<PopMovie>, private val listener: ItemClickListener) :
     RecyclerView.Adapter<MovieRVAdapter.ItemViewHolder>() {
-    private val posterUrl = "https://image.tmdb.org/t/p/w500"
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         val view =
@@ -25,10 +25,9 @@ class MovieRVAdapter(private val list: List<PopMovie>, private val listener: Ite
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val imageUrl = posterUrl.plus(list[position].posterUrl)
-        val title = list[position].title
-        holder.bind(imageUrl, title)
-        holder.itemView.setOnClickListener{
+        val imageUrl = ApiService.BASE_URL_IMAGE_TMDB.plus(list[position].posterUrl)
+        holder.bind(imageUrl, list[position].title)
+        holder.itemView.setOnClickListener {
             listener.onClick(list[position].id)
         }
     }

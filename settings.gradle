@@ -1,4 +1,2 @@
-include ':lib2'
-include ':lib'
 include ':app'
 rootProject.name = "MyMovieCatalog"

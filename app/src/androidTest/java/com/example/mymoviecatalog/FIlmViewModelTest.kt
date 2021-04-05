@@ -46,7 +46,7 @@ class FIlmViewModelTest {
     fun shouldSuccessWhenMainRepReturnsPopMovie() {
         testCoroutineRule.runBlocking {
             Mockito.`when`(mainRep.getPopMovie()).thenReturn(
-                PopMovieModel(
+                PopMovies(
                     ArrayList<PopMovie>()
                 )
             )
@@ -66,7 +66,7 @@ class FIlmViewModelTest {
         testCoroutineRule.runBlocking {
             Mockito.`when`(mainRep.getFilmDetails(550))
                 .thenReturn(
-                    FoundFilmModel(
+                    FilmDetails(
                         "", 0, 0.0f,
                         "", "", "", ""
                     )
@@ -100,13 +100,13 @@ class FIlmViewModelTest {
 
     @Test fun shouldSuccessWhenMainRepReturnsSearchFilms() {
         testCoroutineRule.runBlocking {
-            Mockito.`when`(mainRep.searchFilms("fight")).thenReturn(SearchMovie(ArrayList<FoundMovie>()))
+            Mockito.`when`(mainRep.searchFilms("fight")).thenReturn(MovieSearch(ArrayList<FoundMovie>()))
 
             viewModel.searchFilms("fight")
 
             Mockito.verify(viewStateObserver).onChanged(FilmViewModel.ViewModelViewState.Loading)
             // Mockito.verify(viewStateObserver).onChanged(
-             //FilmViewModel.ViewModelViewState.SuccessSearchMovie(
+             //FilmViewModel.ViewModelViewState.SuccessMovieSearch(
              //any()
            // )
             //)

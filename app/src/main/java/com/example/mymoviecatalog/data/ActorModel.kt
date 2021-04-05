@@ -16,31 +16,7 @@ data class Person(
     val profilePath: String?,
     @SerializedName("known_for")
     val moviesList: ArrayList<Movie>
-):Parcelable{
-    constructor(parcel: Parcel):this(parcel.readString(),parcel.readInt()
-        ,parcel.readString(), parcel.readArrayList(Movie::class.java.classLoader) as ArrayList<Movie>
-    )
-    companion object CREATOR: Parcelable.Creator<Person>{
-        override fun createFromParcel(source: Parcel): Person {
-            return Person(source)
-        }
-
-        override fun newArray(size: Int): Array<Person?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(name)
-        parcel.writeInt(id)
-        parcel.writeString(profilePath)
-        parcel.writeList(moviesList)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-}
+)
 
 data class Movie(
     @SerializedName("original_title")
@@ -54,11 +30,13 @@ data class Movie(
     @SerializedName("genre_ids")
     val genresList: ArrayList<Int>,
     val id: Int
-): Parcelable{
-    constructor(parcel: Parcel):this(parcel.readString(),parcel.readString(),parcel.readString(),parcel.readString(),
-        parcel.readArrayList(ClassLoader.getSystemClassLoader()) as ArrayList<Int>,parcel.readInt()
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(), parcel.readString(), parcel.readString(), parcel.readString(),
+        parcel.readArrayList(ClassLoader.getSystemClassLoader()) as ArrayList<Int>, parcel.readInt()
     )
-    companion object CREATOR:Parcelable.Creator<Movie>{
+
+    companion object CREATOR : Parcelable.Creator<Movie> {
         override fun createFromParcel(source: Parcel): Movie {
             return Movie(source)
         }

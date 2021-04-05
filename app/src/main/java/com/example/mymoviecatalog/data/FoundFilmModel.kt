@@ -2,7 +2,7 @@ package com.example.mymoviecatalog.data
 
 import com.google.gson.annotations.SerializedName
 
-data class FoundFilmModel(
+data class FilmDetails(
     @SerializedName("backdrop_path")
     val backdropPath: String?,
     val runtime: Int?,

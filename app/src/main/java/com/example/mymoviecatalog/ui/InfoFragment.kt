@@ -1,9 +1,8 @@
 package com.example.mymoviecatalog.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymoviecatalog.R
@@ -21,19 +20,18 @@ import com.example.mymoviecatalog.viewModel.ActorsViewModel
 import com.example.mymoviecatalog.viewModel.FilmViewModel
 import kotlinx.android.synthetic.main.fargment_info.*
 
-class InfoFragment : BaseFragment() {
+class InfoFragment : BaseFragment(), ItemClickListener {
     private lateinit var actorsList: ArrayList<Person>
     lateinit var filmViewModel: FilmViewModel
     lateinit var actorsViewModel: ActorsViewModel
-    lateinit var actorsModel: ActorDetailsModel
     private var moviesMap: MutableMap<Int, java.util.ArrayList<Movie>> = mutableMapOf()
-    private lateinit var movieList: java.util.ArrayList<Movie>
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        activity?.title = getString(R.string.infoFragment_title)
         filmViewModel = viewModel(factory)
         actorsViewModel = viewModel(factory)
         setupObserversForViewModel()
@@ -41,14 +39,7 @@ class InfoFragment : BaseFragment() {
     }
 
     private fun setupRV(list: List<Person>) {
-        val adapter =
-            ActorRVAdapter(list, object : ItemClickListener {
-                override fun onClick(id: Int) {
-                   // actorsViewModel.getActorDetails(id)
-
-                    createActivity(ActorDetailsActivity::class.java, id, createMovieList(id))
-                }
-            })
+        val adapter = ActorRVAdapter(list, this)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         actors_recycler.layoutManager = layoutManager
         actors_recycler.adapter = adapter
@@ -56,40 +47,43 @@ class InfoFragment : BaseFragment() {
 
     private fun setupObserversForViewModel() {
         actorsViewModel.getPersons()
-        actorsViewModel.actorsLiveData.observe(viewLifecycleOwner, Observer{
-            when(it){
+        actorsViewModel.actorsLiveData.observe(viewLifecycleOwner, Observer {
+            when (it) {
                 is ActorsViewModel.ViewModelViewState.SuccessActors -> {
                     actorsList = it.data.personsList
+                    initMoviesMap(actorsList)
                     setupRV(actorsList)
                 }
             }
         })
         filmViewModel.getPopMovies()
-        filmViewModel.filmLiveData.observe(viewLifecycleOwner, Observer{
-            when(it){
-                is FilmViewModel.ViewModelViewState.SuccessPopMovies ->{
+        filmViewModel.filmLiveData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is FilmViewModel.ViewModelViewState.SuccessPopMovies -> {
                     setUpPopMovieRV(it.data.popMovieList)
                 }
             }
         })
     }
 
-    private fun createMovieList(id: Int): ArrayList<Movie>{
-        actorsList.forEach{
+    private fun initMoviesMap(list: ArrayList<Person>){
+        list.forEach{
             moviesMap[it.id] = it.moviesList
         }
-        return moviesMap[id] as ArrayList<Movie>
     }
 
     private fun setUpPopMovieRV(list: List<PopMovie>) {
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         val adapter = MovieRVAdapter(list, object : ItemClickListener {
             override fun onClick(id: Int) {
-                createActivity(FilmDetailsActivity::class.java, id.toString())
+                createActivity(FilmDetailsActivity::class.java, id)
             }
         })
         movie_RV.layoutManager = layoutManager
         movie_RV.adapter = adapter
     }
 
+    override fun onClick(id: Int) {
+        createActivity(ActorDetailsActivity::class.java, id, moviesMap[id])
+    }
 }
