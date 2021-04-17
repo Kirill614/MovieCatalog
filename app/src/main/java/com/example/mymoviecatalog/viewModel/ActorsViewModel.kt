@@ -20,8 +20,6 @@ class ActorsViewModel
 ) : ViewModel() {
     private val _actorsLiveData = MutableLiveData<ViewModelViewState>()
     val actorsLiveData = _actorsLiveData
-    //val IO: CoroutineContext by lazy { Dispatchers.IO }
-    //val IO: CoroutineContext = Dispatchers.IO
 
     fun getPersons() {
         _actorsLiveData.value = ViewModelViewState.Loading

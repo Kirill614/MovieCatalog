@@ -28,8 +28,7 @@
                 android:id="@+id/actor_image"
                 android:layout_width="230dp"
                 android:layout_height="244dp"
-                android:layout_marginLeft="85dp"
-                app:srcCompat="@drawable/gal" />
+                android:layout_marginLeft="85dp" />
 
 
             <TextView

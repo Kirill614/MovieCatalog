@@ -22,7 +22,6 @@ class FilmViewModel
 ) : ViewModel() {
     private val _filmLiveData = MutableLiveData<ViewModelViewState>()
     val filmLiveData = _filmLiveData
-    private val IO: CoroutineContext by lazy { Dispatchers.IO }
 
     fun getPopMovies() {
         _filmLiveData.value = ViewModelViewState.Loading
@@ -47,7 +46,7 @@ class FilmViewModel
     fun getTrailers(id: Int) {
         _filmLiveData.value = ViewModelViewState.Loading
         viewModelScope.launch {
-            val data = withContext(IO) {
+            val data = withContext(contextProvider.IO) {
                 mainRep.getTrailers(id)
             }
             _filmLiveData.value = ViewModelViewState.SuccessTrailers(data)
@@ -57,7 +56,7 @@ class FilmViewModel
     fun searchFilms(query: String) {
         _filmLiveData.value = ViewModelViewState.Loading
         viewModelScope.launch {
-            val data = withContext(IO) {
+            val data = withContext(contextProvider.IO) {
                 mainRep.searchFilms(query)
             }
             _filmLiveData.value = ViewModelViewState.SuccessMovieSearch(data)

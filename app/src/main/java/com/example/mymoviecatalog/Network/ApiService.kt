@@ -16,6 +16,7 @@ interface ApiService {
         private const val MOVIE_SEARCH = "/3/search/movie"
         private const val PARAM_LANGUAGE = "language"
         private const val MOVIE_ID = "movie_id"
+        private const val PERSON_ID = "person_id"
         const val BASE_URL_IMAGE_TMDB = "https://image.tmdb.org/t/p/w500"
     }
     @GET(PERSON_POPULAR)
@@ -25,7 +26,7 @@ interface ApiService {
 
     @GET(PERSON_DETAILS)
     open suspend fun getPersonDetails(
-        @Path("person_id") id: Int
+        @Path(PERSON_ID) id: Int
     ): ActorDetailsModel
 
     @GET(MOVIE_POPULAR)

@@ -66,8 +66,8 @@ class InfoFragment : BaseFragment(), ItemClickListener {
         })
     }
 
-    private fun initMoviesMap(list: ArrayList<Person>){
-        list.forEach{
+    private fun initMoviesMap(list: ArrayList<Person>) {
+        list.forEach {
             moviesMap[it.id] = it.moviesList
         }
     }

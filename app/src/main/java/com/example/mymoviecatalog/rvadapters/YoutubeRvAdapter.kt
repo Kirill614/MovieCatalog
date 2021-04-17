@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mymoviecatalog.R
+import com.example.mymoviecatalog.Utils.OnFilmClickListener
 import com.example.mymoviecatalog.ui.YoutubeFilmFragment
 import com.example.mymoviecatalog.data.Film
 import com.squareup.picasso.Picasso
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.youtube_film_cardview.view.*
 
 class YoutubeRvAdapter(
     private val list: ArrayList<Film>,
-    private val listener: YoutubeFilmFragment.OnFilmClickListener
+    private val listener: OnFilmClickListener
 ) :
     RecyclerView.Adapter<YoutubeRvAdapter.ItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
@@ -28,7 +29,7 @@ class YoutubeRvAdapter(
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.itemView.setOnClickListener {
             val description = list[position].snippet?.description
-            list[position].snippet?.resourceId?.videoId?.let { listener.onClick(it, description) }
+            list[position].snippet?.resourceId?.videoId?.let { listener.onClick(it, description.toString()) }
         }
         val posterUrl = list[position].snippet?.thumbnails?.high?.url
         val title = list[position].snippet?.title

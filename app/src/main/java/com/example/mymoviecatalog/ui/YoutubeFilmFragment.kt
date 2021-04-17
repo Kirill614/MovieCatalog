@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymoviecatalog.R
+import com.example.mymoviecatalog.Utils.ItemClickListener
+import com.example.mymoviecatalog.Utils.OnFilmClickListener
 import com.example.mymoviecatalog.base.BaseFragment
 import com.example.mymoviecatalog.extensions.viewModel
 import com.example.mymoviecatalog.data.Film
@@ -18,10 +20,11 @@ import com.example.mymoviecatalog.rvadapters.YoutubeRvAdapter
 import com.example.mymoviecatalog.viewModel.YouTubeViewModel
 import kotlinx.android.synthetic.main.fragment_youtube_films.*
 import retrofit2.Retrofit
+import java.lang.StringBuilder
 import javax.inject.Inject
 import javax.inject.Named
 
-class YoutubeFilmFragment(): BaseFragment() {
+class YoutubeFilmFragment(): BaseFragment(), OnFilmClickListener {
     lateinit var viewModel: YouTubeViewModel
     lateinit var filmsList: ArrayList<Film>
     lateinit var playlistId: String
@@ -31,27 +34,19 @@ class YoutubeFilmFragment(): BaseFragment() {
         val title = arguments?.getString("title")
         activity?.title = title
 
-        val component = DaggerAppComponent.builder().application(activity).build()
-        component.inject(this)
-
         viewModel = viewModel(factory)
         setupObserversForViewModel()
     }
 
     private fun setupRV() {
-        val adapter = YoutubeRvAdapter(filmsList, object :
-            OnFilmClickListener {
-            override fun onClick(id: String, description: String?) {
-                createActivity(WatchFilmActivity::class.java, id, description)
-            }
-        })
+        val adapter = YoutubeRvAdapter(filmsList, this)
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false)
         youtube_rv.adapter = adapter
         youtube_rv.layoutManager = layoutManager
     }
 
     private fun setupObserversForViewModel() {
-        viewModel.getYoutubeFilms(playlistId.toString())
+        viewModel.getYoutubeFilms(playlistId)
         viewModel.youtubeLiveData.observe(this, Observer {
             when (it) {
                 is YouTubeViewModel.ViewModelViewState.SuccessYoutubeFilms -> {
@@ -71,8 +66,7 @@ class YoutubeFilmFragment(): BaseFragment() {
             .inflate(R.layout.fragment_youtube_films, container, false)
     }
 
-    interface OnFilmClickListener {
-        fun onClick(id: String, description: String?)
+    override fun onClick(id: String, description: String) {
+        createActivity(WatchFilmActivity::class.java, id, description)
     }
-
 }

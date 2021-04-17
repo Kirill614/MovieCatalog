@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="comedy_playlist">PLKFv49NwZ7po_QKkvibu5sdtM94q_tJsV</string>
+    <string name="melodrama_playlist">PLKFv49NwZ7prfhWGzOUPhGLJEkKJuATSF</string>
+    <string name="action_playlist">PLKFv49NwZ7ppW9hutJtfz5v8C8q7M0jj_</string>
+    <string name="detective_playlist">PLKFv49NwZ7ppfrpa59mYdyXm_7buLbw2p</string>
+    <string name="fiction_playlist">PLKFv49NwZ7prnq3GHXGUjY_fgQtJbcP4Y</string>
+    <string name="history_playlist">PLKFv49NwZ7pqL-XXApPKqRubl3MwVOK54</string>
+</resources>
