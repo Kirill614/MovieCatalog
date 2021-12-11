@@ -7,8 +7,8 @@
         <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_info"
-                    android:title="Информация" />
+                    android:id="@+id/nav_home"
+                    android:title="Главная" />
             </group>
         </menu>
     </item>

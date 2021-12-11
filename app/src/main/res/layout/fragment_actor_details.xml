@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     android:background="#000000">
 
-    <include
-        layout="@layout/app_bar_main"
-        android:layout_width="414dp"
-        android:layout_height="62dp"
-        tools:layout_editor_absoluteX="-3dp" />
-
     <ScrollView
         android:layout_width="411dp"
         android:layout_height="669dp"

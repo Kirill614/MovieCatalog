@@ -1,9 +1,7 @@
 package com.example.mymoviecatalog.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,18 +22,55 @@ import java.lang.StringBuilder
 import javax.inject.Inject
 import javax.inject.Named
 
-class YoutubeFilmFragment(): BaseFragment(), OnFilmClickListener {
+class YoutubeFilmFragment() : BaseFragment(), OnFilmClickListener {
     lateinit var viewModel: YouTubeViewModel
     lateinit var filmsList: ArrayList<Film>
-    lateinit var playlistId: String
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    var playlistId: String? = null
+    private lateinit var mainActivity: MainActivity
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setHasOptionsMenu(true)
+//        playlistId = arguments?.getString("id").toString()
+//        playlistId?.let { setTitle(it) }
+//        val title = arguments?.getString("title")
+//        activity?.title = title
+//
+//        viewModel = viewModel(factory)
+//        setupObserversForViewModel()
+//    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return LayoutInflater.from(activity)
+            .inflate(R.layout.fragment_youtube_films, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
+        mainActivity = activity as MainActivity
         playlistId = arguments?.getString("id").toString()
-        val title = arguments?.getString("title")
-        activity?.title = title
+        playlistId?.let { setTitle(it) }
 
         viewModel = viewModel(factory)
         setupObserversForViewModel()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+    }
+
+    private fun setTitle(playListId: String){
+        when(playListId){
+            getString(R.string.comedy_playlist) -> mainActivity.title = "Комедии"
+            getString(R.string.melodrama_playlist) -> mainActivity.title = "Мелодрамы"
+            getString(R.string.action_playlist) -> mainActivity.title = "Боевики"
+            getString(R.string.detective_playlist) -> mainActivity.title = "Детектив"
+            getString(R.string.fiction_playlist) -> mainActivity.title = "Фантастика"
+            getString(R.string.history_playlist) -> mainActivity.title = "Исторические фильмы"
+        }
     }
 
     private fun setupRV() {
@@ -46,8 +81,14 @@ class YoutubeFilmFragment(): BaseFragment(), OnFilmClickListener {
     }
 
     private fun setupObserversForViewModel() {
-        viewModel.getYoutubeFilms(playlistId)
-        viewModel.youtubeLiveData.observe(this, Observer {
+        // viewModel.getYoutubeFilms(playlistId)
+//        playlistId?.let {
+//            viewModel.getYoutubeFilms(it)
+//        }
+        if (playlistId != null){
+            viewModel.getYoutubeFilms(playlistId!!)
+        }
+        viewModel.youtubeLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is YouTubeViewModel.ViewModelViewState.SuccessYoutubeFilms -> {
                     filmsList = it.data.items
@@ -55,15 +96,6 @@ class YoutubeFilmFragment(): BaseFragment(), OnFilmClickListener {
                 }
             }
         })
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return LayoutInflater.from(activity)
-            .inflate(R.layout.fragment_youtube_films, container, false)
     }
 
     override fun onClick(id: String, description: String) {

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/graph_home"
+    app:startDestination="@+id/nav_home">
+
+    <navigation
+        android:id="@+id/actor_details_navigation"
+        app:startDestination="@id/graph_actor_details">
+        <include app:graph="@navigation/graph_actor_details" />
+    </navigation>
+
+    <fragment
+        android:id="@+id/nav_home"
+
+        android:name="com.example.mymoviecatalog.ui.HomeFragment">
+        <action
+            android:id="@+id/homeFragment_to_actorDetails_graph"
+            app:destination="@id/actor_details_navigation" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_film_details"
+        android:name="com.example.mymoviecatalog.ui.FilmDetailsFragment"/>
+
+</navigation>

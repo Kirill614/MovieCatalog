@@ -1,45 +1,71 @@
 package com.example.mymoviecatalog.ui
 
-import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.*
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymoviecatalog.R
 import com.example.mymoviecatalog.Utils.ItemClickListener
-import com.example.mymoviecatalog.base.BaseActivity
+import com.example.mymoviecatalog.base.BaseFragment
 import com.example.mymoviecatalog.data.ActorDetailsModel
 import com.example.mymoviecatalog.data.Movie
-import com.example.mymoviecatalog.di.DaggerAppComponent
-import com.example.mymoviecatalog.di.Factory
 import com.example.mymoviecatalog.extensions.viewModel
 import com.example.mymoviecatalog.rvadapters.ActorsFilmsAdapter
 import com.example.mymoviecatalog.viewModel.ActorsViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.actor_detail_activity.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.fragment_actor_details.*
 import java.util.ArrayList
-import javax.inject.Inject
 
-class ActorDetailsActivity : BaseActivity(), ItemClickListener {
+class ActorDetailsFragment : BaseFragment(), ItemClickListener {
     private var movieList: ArrayList<Movie>? = null
     private var id: Int? = null
     private lateinit var adapter: ActorsFilmsAdapter
     private lateinit var viewModel: ActorsViewModel
+    private lateinit var mainActivity: MainActivity
+    private var oldTitle = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.actor_detail_activity)
-        setSupportActionBar(toolbar)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return LayoutInflater.from(context)
+            .inflate(R.layout.fragment_actor_details, container, false)
+    }
 
-        getFromBundle()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        mainActivity = activity as MainActivity
+        id = arguments?.getInt("id")
+        movieList = arguments?.getParcelableArrayList("movies")
         setupObserverForViewModel()
+        setHasOptionsMenu(true)
+        requireActivity().onBackPressedDispatcher.addCallback(object :
+            OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                mainActivity.title = oldTitle
+                findNavController().popBackStack()
+            }
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        mainActivity.title = oldTitle
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
     }
 
     private fun setupObserverForViewModel() {
         viewModel = viewModel(factory)
-        id?.let { viewModel.getActorDetails(it) }
-        viewModel.actorsLiveData.observe(this, Observer {
+        id?.let {
+            viewModel.getActorDetails(it)
+        }
+        viewModel.actorsLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is ActorsViewModel.ViewModelViewState.SuccessActorDetails -> {
                     val actorDetails =
@@ -56,19 +82,14 @@ class ActorDetailsActivity : BaseActivity(), ItemClickListener {
 
     private fun setupRV() {
         movieList?.let { adapter = ActorsFilmsAdapter(it, this) }
-        val layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         films_recycler.adapter = adapter
         films_recycler.layoutManager = layoutManager
     }
 
-    private fun getFromBundle() {
-        val bundle = intent.getBundleExtra("bundle")
-        id = bundle!!.getInt("id")
-        movieList = bundle.getParcelableArrayList("movies")
-    }
-
     private fun setActorsDetails(personDetails: ActorDetailsModel) {
-        title = personDetails?.name
+        oldTitle = mainActivity.title.toString()
+        mainActivity.title = personDetails.name
         val profileImageUrl =
             getString(R.string.base_image_url_tmdb).plus(personDetails!!.profilePath)
         Picasso.get().load(profileImageUrl).into(actor_image)
@@ -76,15 +97,7 @@ class ActorDetailsActivity : BaseActivity(), ItemClickListener {
         setupRV()
     }
 
-    private fun createFilmDetailsActivity(id: Int) {
-        val intent = Intent(this@ActorDetailsActivity, FilmDetailsActivity::class.java)
-        val bundle = Bundle()
-        bundle.putInt("id", id)
-        intent.putExtra("bundle", bundle)
-        startActivity(intent)
-    }
-
     override fun onClick(id: Int) {
-        createFilmDetailsActivity(id)
+        //createFilmDetailsActivity(id)
     }
 }

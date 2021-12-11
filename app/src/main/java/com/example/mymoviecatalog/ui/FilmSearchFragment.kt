@@ -3,12 +3,9 @@ package com.example.mymoviecatalog.ui
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.example.mymoviecatalog.Network.ApiHelper
-import com.example.mymoviecatalog.Network.ApiService
 import com.example.mymoviecatalog.R
-import com.example.mymoviecatalog.Repository.MainRepository
-import com.example.mymoviecatalog.Utils.CoroutineContextProvieder
 import com.example.mymoviecatalog.data.FoundMovie
 import com.example.mymoviecatalog.Utils.ItemClickListener
 import com.example.mymoviecatalog.base.BaseFragment
@@ -41,7 +38,8 @@ class FilmSearchFragment : BaseFragment(), ItemClickListener {
     }
 
     override fun onClick(id: Int) {
-        createActivity(FilmDetailsActivity::class.java, id)
+        //createActivity(FilmDetailsFragment::class.java, id)
+
     }
 
     private fun setupObserversForViewModel() {

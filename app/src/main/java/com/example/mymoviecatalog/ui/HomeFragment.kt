@@ -2,13 +2,13 @@ package com.example.mymoviecatalog.ui
 
 import android.os.Bundle
 import android.view.*
-import androidx.lifecycle.MutableLiveData
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mymoviecatalog.R
 import com.example.mymoviecatalog.Utils.ItemClickListener
 import com.example.mymoviecatalog.base.BaseFragment
-import com.example.mymoviecatalog.data.ActorDetailsModel
 import com.example.mymoviecatalog.data.Movie
 import com.example.mymoviecatalog.data.Person
 import com.example.mymoviecatalog.data.PopMovie
@@ -18,9 +18,10 @@ import com.example.mymoviecatalog.rvadapters.ActorRVAdapter
 import com.example.mymoviecatalog.rvadapters.MovieRVAdapter
 import com.example.mymoviecatalog.viewModel.ActorsViewModel
 import com.example.mymoviecatalog.viewModel.FilmViewModel
-import kotlinx.android.synthetic.main.fargment_info.*
+import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.fargment_home.*
 
-class InfoFragment : BaseFragment(), ItemClickListener {
+class HomeFragment : BaseFragment(), ItemClickListener {
     private lateinit var actorsList: ArrayList<Person>
     lateinit var filmViewModel: FilmViewModel
     lateinit var actorsViewModel: ActorsViewModel
@@ -31,11 +32,14 @@ class InfoFragment : BaseFragment(), ItemClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.title = getString(R.string.infoFragment_title)
+        return LayoutInflater.from(activity).inflate(R.layout.fargment_home, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        (activity as MainActivity).title = "Главная"
         filmViewModel = viewModel(factory)
         actorsViewModel = viewModel(factory)
         setupObserversForViewModel()
-        return LayoutInflater.from(activity).inflate(R.layout.fargment_info, container, false)
     }
 
     private fun setupRV(list: List<Person>) {
@@ -76,7 +80,7 @@ class InfoFragment : BaseFragment(), ItemClickListener {
         val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
         val adapter = MovieRVAdapter(list, object : ItemClickListener {
             override fun onClick(id: Int) {
-                createActivity(FilmDetailsActivity::class.java, id)
+                findNavController().navigate(R.id.nav_film_details, bundleOf(Pair("id", id)))
             }
         })
         movie_RV.layoutManager = layoutManager
@@ -84,6 +88,12 @@ class InfoFragment : BaseFragment(), ItemClickListener {
     }
 
     override fun onClick(id: Int) {
-        createActivity(ActorDetailsActivity::class.java, id, moviesMap[id])
+        findNavController().navigate(
+            R.id.homeFragment_to_actorDetails_graph,
+            bundleOf(
+                Pair("id", id),
+                Pair("movies", moviesMap[id])
+            )
+        )
     }
 }

@@ -3,17 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_info">
+    app:startDestination="@+id/nav_graph_home">
+
+    <navigation
+        android:id="@+id/nav_graph_home"
+        app:startDestination="@id/graph_home">
+        <include app:graph="@navigation/graph_home" />
+    </navigation>
 
     <fragment
-        android:id="@+id/nav_info"
-        android:name="com.example.mymoviecatalog.ui.InfoFragment"
-        android:label="Информация"/>
+        android:id="@+id/nav_comedy"
+        android:name="com.example.mymoviecatalog.ui.YoutubeFilmFragment" />
 
-<!--<fragment
-    android:id="@+id/nav_comedy"
-    android:name="com.example.mymoviecatalog.ui.YoutubeFilmFragment"
-    />-->
+    <fragment
+        android:id="@+id/nav_melodr"
+        android:name="com.example.mymoviecatalog.ui.YoutubeFilmFragment" />
+
+    <fragment
+        android:id="@+id/nav_action"
+        android:name="com.example.mymoviecatalog.ui.YoutubeFilmFragment" />
+
+    <fragment
+        android:id="@+id/nav_detective"
+        android:name="com.example.mymoviecatalog.ui.YoutubeFilmFragment" />
+
+    <fragment
+        android:id="@+id/nav_fiction"
+        android:name="com.example.mymoviecatalog.ui.YoutubeFilmFragment" />
+
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.example.mymoviecatalog.ui.YoutubeFilmFragment" />
 
 
 </navigation>

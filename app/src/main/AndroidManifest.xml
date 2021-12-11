@@ -18,9 +18,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.ActorDetailsActivity">
+        <activity android:name=".ui.ActorDetailsFragment">
         </activity>
-        <activity android:name=".ui.FilmDetailsActivity">
+        <activity android:name=".ui.FilmDetailsFragment">
 
         </activity>
         <activity android:name=".ui.WatchFilmActivity"

@@ -1,6 +1,5 @@
 package com.example.mymoviecatalog.di
 
-import android.app.Person
 import android.content.Context
 import com.example.mymoviecatalog.base.BaseActivity
 import com.example.mymoviecatalog.base.BaseFragment
@@ -19,8 +18,8 @@ interface AppComponent {
         fun build(): AppComponent
     }
 
-    fun inject(activity: ActorDetailsActivity)
-    fun inject(activity: FilmDetailsActivity)
+    fun inject(activity: ActorDetailsFragment)
+    fun inject(activity: FilmDetailsFragment)
     fun inject(fragment: YoutubeFilmFragment)
     fun inject(fragment: BaseFragment)
     fun inject(activity: BaseActivity)
